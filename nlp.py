@@ -40,7 +40,7 @@ class NLP:
         other_pipes = [pipe for pipe in self.nlp.pipe_names if pipe not in pipe_exceptions]
 
         # only train NER
-        with nlp.disable_pipes(*other_pipes) and warnings.catch_warnings():
+        with self.nlp.disable_pipes(*other_pipes) and warnings.catch_warnings():
             # show warnings for misaligned entity spans once
             warnings.filterwarnings("once", category=UserWarning, module='spacy')
 
