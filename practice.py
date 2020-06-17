@@ -30,10 +30,10 @@ log.info(f"Total Pages: {len(db.get_pages())}")
 training_data = db.get_training_data()
 if training_data is None:
     training_data = []
+else:
+    log.debug(f"Loaded training data from the database: {training_data}")
 
-log.info(f"Loaded training data from the database: {training_data}")
-
-nlp = NLP(map(lambda page: page.content, pages), training_data)
+nlp = NLP(category, map(lambda page: page.content, pages), training_data)
 
 log.info("NLP object was initialized")
 
@@ -42,4 +42,9 @@ if len(training_data) == 0:
     log.info("Prepared training data")
     db.save_training_data(nlp.training_data)
     log.info("Saved training data to the database")
+    nlp.train_model()
+    log.info("New model was trained")
 
+doc = nlp.read_text("AHP was created by Thomas Saaty to solve matrix by evaluation the hierarchy and establishing priorities")
+
+print([(ent.text, ent.label_) for ent in doc.ents])
